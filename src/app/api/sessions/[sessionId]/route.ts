@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { userIdFromRequest } from '@/app/lib/browserIdentity';
 import { deleteSession, getSessionById, updateSession } from '@/lib/sessions/repository';
 import type {
   PersistedCanvasState,
@@ -22,10 +23,20 @@ function isCanvasState(value: unknown): value is PersistedCanvasState {
   return state.version === 1 && Array.isArray(state.steps);
 }
 
-export async function GET(_request: Request, context: RouteContext) {
+function unauthorized() {
+  return NextResponse.json(
+    { error: 'Missing or invalid browser user id. Refresh the page and try again.' },
+    { status: 401 },
+  );
+}
+
+export async function GET(request: Request, context: RouteContext) {
   try {
+    const userId = userIdFromRequest(request);
+    if (!userId) return unauthorized();
+
     const { sessionId } = await context.params;
-    const session = await getSessionById(sessionId);
+    const session = await getSessionById(sessionId, userId);
     if (!session) {
       return NextResponse.json({ error: 'Session not found' }, { status: 404 });
     }
@@ -38,6 +49,9 @@ export async function GET(_request: Request, context: RouteContext) {
 
 export async function PATCH(request: Request, context: RouteContext) {
   try {
+    const userId = userIdFromRequest(request);
+    if (!userId) return unauthorized();
+
     const { sessionId } = await context.params;
     const body = (await request.json()) as Partial<UpdateSessionInput>;
 
@@ -65,7 +79,7 @@ export async function PATCH(request: Request, context: RouteContext) {
       return NextResponse.json({ error: 'no valid fields to update' }, { status: 400 });
     }
 
-    const session = await updateSession(sessionId, patch);
+    const session = await updateSession(sessionId, patch, userId);
     if (!session) {
       return NextResponse.json({ error: 'Session not found' }, { status: 404 });
     }
@@ -76,10 +90,13 @@ export async function PATCH(request: Request, context: RouteContext) {
   }
 }
 
-export async function DELETE(_request: Request, context: RouteContext) {
+export async function DELETE(request: Request, context: RouteContext) {
   try {
+    const userId = userIdFromRequest(request);
+    if (!userId) return unauthorized();
+
     const { sessionId } = await context.params;
-    const deleted = await deleteSession(sessionId);
+    const deleted = await deleteSession(sessionId, userId);
     if (!deleted) {
       return NextResponse.json({ error: 'Session not found' }, { status: 404 });
     }

@@ -3,6 +3,18 @@ import type {
   TeachingSession,
   UpdateSessionInput,
 } from '@/lib/sessions/types';
+import {
+  getOrCreateBrowserUserId,
+  MATHLON_USER_ID_HEADER,
+} from './browserIdentity';
+
+function identityHeaders(extra?: HeadersInit): Headers {
+  const headers = new Headers(extra);
+  if (typeof window !== 'undefined') {
+    headers.set(MATHLON_USER_ID_HEADER, getOrCreateBrowserUserId());
+  }
+  return headers;
+}
 
 async function parseJson<T>(response: Response): Promise<T> {
   const data = (await response.json()) as T & { error?: string };
@@ -20,6 +32,7 @@ export async function listTeachingSessions(): Promise<TeachingSession[]> {
   const response = await fetch('/api/sessions', {
     method: 'GET',
     cache: 'no-store',
+    headers: identityHeaders(),
   });
   const data = await parseJson<{ sessions: TeachingSession[] }>(response);
   return data.sessions;
@@ -30,7 +43,7 @@ export async function createTeachingSession(
 ): Promise<TeachingSession> {
   const response = await fetch('/api/sessions', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: identityHeaders({ 'Content-Type': 'application/json' }),
     body: JSON.stringify(input),
   });
   const data = await parseJson<{ session: TeachingSession }>(response);
@@ -41,6 +54,7 @@ export async function fetchTeachingSession(sessionId: string): Promise<TeachingS
   const response = await fetch(`/api/sessions/${sessionId}`, {
     method: 'GET',
     cache: 'no-store',
+    headers: identityHeaders(),
   });
   const data = await parseJson<{ session: TeachingSession }>(response);
   return data.session;
@@ -52,7 +66,7 @@ export async function updateTeachingSession(
 ): Promise<TeachingSession> {
   const response = await fetch(`/api/sessions/${sessionId}`, {
     method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
+    headers: identityHeaders({ 'Content-Type': 'application/json' }),
     body: JSON.stringify(input),
   });
   const data = await parseJson<{ session: TeachingSession }>(response);
@@ -62,6 +76,7 @@ export async function updateTeachingSession(
 export async function deleteTeachingSession(sessionId: string): Promise<void> {
   const response = await fetch(`/api/sessions/${sessionId}`, {
     method: 'DELETE',
+    headers: identityHeaders(),
   });
   await parseJson<{ ok: boolean }>(response);
 }

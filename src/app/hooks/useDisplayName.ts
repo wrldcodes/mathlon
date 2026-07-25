@@ -4,15 +4,14 @@ import { useCallback, useEffect, useState } from 'react';
 import {
   DEFAULT_DISPLAY_NAME,
   displayNameInitial,
-  readEnvDisplayName,
+  getOrCreateBrowserUserId,
   readStoredDisplayName,
   resolveDisplayName,
   writeStoredDisplayName,
-} from '../lib/displayName';
+} from '../lib/browserIdentity';
 
 /**
- * Client display name for sidebar / home greeting / voice variables.
- * Prompts once when neither localStorage nor env has a name.
+ * Client display name + ensures a browser user id exists for session scoping.
  */
 export function useDisplayName() {
   const [name, setNameState] = useState(DEFAULT_DISPLAY_NAME);
@@ -20,14 +19,12 @@ export function useDisplayName() {
   const [needsSetup, setNeedsSetup] = useState(false);
 
   useEffect(() => {
+    // Mint/restore anonymous user id before any session API calls
+    getOrCreateBrowserUserId();
+
     const stored = readStoredDisplayName();
-    const env = readEnvDisplayName();
     if (stored) {
       setNameState(stored);
-      setNeedsSetup(false);
-    } else if (env) {
-      // Seed localStorage from env so later sessions stay consistent in this browser
-      setNameState(writeStoredDisplayName(env));
       setNeedsSetup(false);
     } else {
       setNameState(DEFAULT_DISPLAY_NAME);
@@ -48,7 +45,6 @@ export function useDisplayName() {
     ready,
     needsSetup,
     initial: displayNameInitial(name),
-    /** Re-read storage (e.g. after another tab updates the name). */
     refresh: () => setNameState(resolveDisplayName()),
   };
 }

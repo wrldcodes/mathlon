@@ -50,13 +50,17 @@ function toSession(doc: WithId<SessionDoc>): TeachingSession {
   };
 }
 
-/** Until auth lands, sessions are scoped to this placeholder user. */
-export function resolveUserId(explicit?: string): string {
-  return (
-    explicit?.trim() ||
-    process.env.MATHLON_DEV_USER_ID?.trim() ||
-    'dev-user'
-  );
+/**
+ * Until real auth lands, callers must pass the browser anonymous user id
+ * (from the X-Mathlon-User-Id header). No shared env fallback — that made
+ * every teammate share one session list.
+ */
+export function requireUserId(userId: string | null | undefined): string {
+  const id = userId?.trim() ?? '';
+  if (!id) {
+    throw new Error('Missing browser user id. Refresh the page and try again.');
+  }
+  return id;
 }
 
 export async function createSession(input: CreateSessionInput): Promise<TeachingSession> {
@@ -68,7 +72,7 @@ export async function createSession(input: CreateSessionInput): Promise<Teaching
   const isDemo = Boolean(input.demo);
 
   const doc: SessionDoc = {
-    userId: resolveUserId(input.userId),
+    userId: requireUserId(input.userId),
     title,
     prompt,
     entryMode,
@@ -87,16 +91,22 @@ export async function createSession(input: CreateSessionInput): Promise<Teaching
   return toSession({ ...doc, _id: result.insertedId });
 }
 
-export async function getSessionById(sessionId: string): Promise<TeachingSession | null> {
+export async function getSessionById(
+  sessionId: string,
+  userId?: string,
+): Promise<TeachingSession | null> {
   if (!ObjectId.isValid(sessionId)) return null;
   const col = await sessions();
-  const doc = await col.findOne({ _id: new ObjectId(sessionId) });
+  const filter: { _id: ObjectId; userId?: string } = { _id: new ObjectId(sessionId) };
+  if (userId) filter.userId = userId;
+  const doc = await col.findOne(filter);
   return doc ? toSession(doc) : null;
 }
 
 export async function updateSession(
   sessionId: string,
   input: UpdateSessionInput,
+  userId?: string,
 ): Promise<TeachingSession | null> {
   if (!ObjectId.isValid(sessionId)) return null;
 
@@ -126,11 +136,10 @@ export async function updateSession(
   const update: { $set: Partial<SessionDoc>; $unset?: Record<string, ''> } = { $set };
   if (Object.keys($unset).length > 0) update.$unset = $unset;
 
-  const doc = await col.findOneAndUpdate(
-    { _id: new ObjectId(sessionId) },
-    update,
-    { returnDocument: 'after' },
-  );
+  const filter: { _id: ObjectId; userId?: string } = { _id: new ObjectId(sessionId) };
+  if (userId) filter.userId = userId;
+
+  const doc = await col.findOneAndUpdate(filter, update, { returnDocument: 'after' });
 
   return doc ? toSession(doc) : null;
 }
@@ -138,16 +147,18 @@ export async function updateSession(
 export async function listSessionsForUser(userId: string, limit = 50): Promise<TeachingSession[]> {
   const col = await sessions();
   const docs = await col
-    .find({ userId })
+    .find({ userId: requireUserId(userId) })
     .sort({ createdAt: -1 })
     .limit(limit)
     .toArray();
   return docs.map(toSession);
 }
 
-export async function deleteSession(sessionId: string): Promise<boolean> {
+export async function deleteSession(sessionId: string, userId?: string): Promise<boolean> {
   if (!ObjectId.isValid(sessionId)) return false;
   const col = await sessions();
-  const result = await col.deleteOne({ _id: new ObjectId(sessionId) });
+  const filter: { _id: ObjectId; userId?: string } = { _id: new ObjectId(sessionId) };
+  if (userId) filter.userId = userId;
+  const result = await col.deleteOne(filter);
   return result.deletedCount === 1;
 }

@@ -279,7 +279,7 @@ export function useElevenLabsVoice(callbacks: VoiceCallbacks): VoiceSession {
           } catch {
             // ignore
           }
-          return process.env.NEXT_PUBLIC_USER_NAME?.trim() || 'there';
+          return 'there';
         })(),
         teaching_pace: 'normal',
         student_question: launch.studentQuestion,
