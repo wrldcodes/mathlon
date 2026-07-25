@@ -386,13 +386,25 @@ export function AppSidebar({
 
             <div className="mt-2 pt-4 border-t border-border">
               <div className="flex items-center gap-3 px-1">
-                <div className="w-8 h-8 rounded-full bg-primary/15 text-primary flex items-center justify-center text-sm font-semibold select-none shrink-0">
-                  {displayInitial}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium truncate">{displayName}</p>
-                  <p className="text-xs text-muted-foreground">Free plan</p>
-                </div>
+                {!displayNameReady ? (
+                  <>
+                    <Skeleton className="w-8 h-8 rounded-full shrink-0" />
+                    <div className="min-w-0 flex-1 space-y-1.5">
+                      <Skeleton className="h-4 w-24 rounded-md" />
+                      <Skeleton className="h-3 w-16 rounded-md" />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="w-8 h-8 rounded-full bg-primary/15 text-primary flex items-center justify-center text-sm font-semibold select-none shrink-0">
+                      {displayInitial}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-medium truncate">{displayName}</p>
+                      <p className="text-xs text-muted-foreground">Free plan</p>
+                    </div>
+                  </>
+                )}
                 <button
                   className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors shrink-0"
                   title="Settings"

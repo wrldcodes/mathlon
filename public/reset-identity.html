@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Reset Mathlon identity</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 28rem;
+        margin: 3rem auto;
+        padding: 0 1.25rem;
+        color: #2d2d2d;
+        line-height: 1.5;
+      }
+      code {
+        background: #f3f3f5;
+        padding: 0.1em 0.35em;
+        border-radius: 4px;
+        font-size: 0.9em;
+      }
+      .ok {
+        color: #166534;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Reset identity</h1>
+    <p id="status">Clearing local name and browser user id…</p>
+    <script>
+      (function () {
+        var keys = ['mathlon.displayName', 'mathlon.userId'];
+        var cleared = [];
+        keys.forEach(function (key) {
+          try {
+            if (localStorage.getItem(key) != null) {
+              localStorage.removeItem(key);
+              cleared.push(key);
+            }
+          } catch (e) {
+            document.getElementById('status').textContent =
+              'Could not access localStorage: ' + e;
+            return;
+          }
+        });
+        var el = document.getElementById('status');
+        el.innerHTML =
+          '<span class="ok">Done.</span> Cleared: <code>' +
+          (cleared.length ? cleared.join('</code>, <code>') : '(already empty)') +
+          '</code>. Redirecting home…';
+        setTimeout(function () {
+          window.location.replace('/');
+        }, 900);
+      })();
+    </script>
+  </body>
+</html>

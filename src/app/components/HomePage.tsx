@@ -16,6 +16,7 @@ import {
   sessionPath,
 } from '../lib/session';
 import { createTeachingSession } from '../lib/sessionsApi';
+import { Skeleton } from './ui/skeleton';
 
 export function HomePage() {
   const router = useRouter();
@@ -24,7 +25,7 @@ export function HomePage() {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const [isCreatingSession, setIsCreatingSession] = useState(false);
   const [createError, setCreateError] = useState<string | null>(null);
-  const { name: displayName, ready: displayNameReady } = useDisplayName();
+  const { name: displayName, ready: displayNameReady, needsSetup } = useDisplayName();
 
   const demo = useDemoMode(() => {});
 
@@ -114,19 +115,29 @@ export function HomePage() {
             <DemoPaywall variant="inline" />
           ) : (
             <div className="relative z-10 w-full max-w-2xl space-y-5">
-              <div className="text-center space-y-2 mb-7">
-                <h2 className="text-4xl font-semibold">
-                  {isDemo
-                    ? 'Try Mathlon — free for 5 minutes'
-                    : displayNameReady
-                      ? `Ready to learn, ${displayName}?`
-                      : 'Ready to learn?'}
-                </h2>
-                <p className="text-base text-muted-foreground">
-                  {isDemo
-                    ? 'Pick a topic below to start your free demo session. No sign-up needed.'
-                    : 'Pick a topic, paste a problem, or hold space to start talking.'}
-                </p>
+              <div className="text-center space-y-2 mb-7 min-h-[5.5rem] flex flex-col items-center justify-center">
+                {isDemo ? (
+                  <>
+                    <h2 className="text-4xl font-semibold">Try Mathlon — free for 5 minutes</h2>
+                    <p className="text-base text-muted-foreground">
+                      Pick a topic below to start your free demo session. No sign-up needed.
+                    </p>
+                  </>
+                ) : !displayNameReady || needsSetup ? (
+                  <>
+                    <Skeleton className="h-10 w-[min(100%,22rem)] max-w-full rounded-lg" />
+                    <Skeleton className="h-5 w-[min(100%,28rem)] max-w-full rounded-md" />
+                  </>
+                ) : (
+                  <>
+                    <h2 className="text-4xl font-semibold">
+                      Ready to learn, {displayName}?
+                    </h2>
+                    <p className="text-base text-muted-foreground">
+                      Pick a topic, paste a problem, or hold space to start talking.
+                    </p>
+                  </>
+                )}
               </div>
 
               {!isDemo && (
