@@ -2,6 +2,7 @@
 
 :root {
   --font-size: 16px;
+  --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-handwritten: 'Caveat', 'Kalam', cursive;
   --background: #f5f1e8;
   --foreground: #2d2d2d;
@@ -40,32 +41,36 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-  --canvas-bg: #ffffff;
+  --canvas-bg: #f5f1e8;
+  --canvas-grid-line: rgba(0,0,0,0.07);
   --canvas-text: #2d2d2d;
+  /* Tutor marks — high contrast on cream paper (gold washed out on #f5f1e8) */
+  --canvas-annotate: #c2410c;
+  --canvas-annotate-fill: rgba(194, 65, 12, 0.12);
   --chat-bubble-user: #e8e4d9;
   --chat-bubble-ai: #ffffff;
 }
 
 .dark {
-  --background: #1a1d23;
-  --foreground: #f0f0f0;
-  --card: #1a1d23;
+  --background: #121212;
+  --foreground: #e8edf7;
+  --card: #1a1a1a;
   --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.145 0 0);
+  --popover: #1a1a1a;
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.985 0 0);
   --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
+  --secondary: #232323;
   --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
+  --muted: #232323;
+  --muted-foreground: #a7b0c2;
+  --accent: #2a2a2a;
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.396 0.141 25.723);
   --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: rgba(255, 255, 255, 0.1);
-  --input: oklch(0.269 0 0);
-  --ring: oklch(0.439 0 0);
+  --border: rgba(163, 179, 205, 0.22);
+  --input: #232323;
+  --ring: #60708f;
   --font-weight-medium: 500;
   --font-weight-normal: 400;
   --chart-1: oklch(0.488 0.243 264.376);
@@ -73,18 +78,21 @@
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
+  --sidebar: #171717;
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-primary: oklch(0.488 0.243 264.376);
   --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent: #232323;
   --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.269 0 0);
-  --sidebar-ring: oklch(0.439 0 0);
-  --canvas-bg: #1a1d23;
-  --canvas-text: #f0f0f0;
-  --chat-bubble-user: #2a2d33;
-  --chat-bubble-ai: #252831;
+  --sidebar-border: rgba(163, 179, 205, 0.2);
+  --sidebar-ring: #60708f;
+  --canvas-bg: #121212;
+  --canvas-grid-line: rgba(255,255,255,0.05);
+  --canvas-text: #e8edf7;
+  --canvas-annotate: #fb923c;
+  --canvas-annotate-fill: rgba(251, 146, 60, 0.16);
+  --chat-bubble-user: #2a2a2a;
+  --chat-bubble-ai: #1d1d1d;
 }
 
 @theme inline {
@@ -135,7 +143,7 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: var(--font-handwritten);
+    font-family: var(--font-ui);
     background-image:
       linear-gradient(0deg, transparent 24%, rgba(0, 0, 0, 0.02) 25%, rgba(0, 0, 0, 0.02) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, 0.02) 75%, rgba(0, 0, 0, 0.02) 76%, transparent 77%, transparent),
       linear-gradient(90deg, transparent 24%, rgba(0, 0, 0, 0.02) 25%, rgba(0, 0, 0, 0.02) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, 0.02) 75%, rgba(0, 0, 0, 0.02) 76%, transparent 77%, transparent);
@@ -144,7 +152,7 @@
 
   .dark body {
     background-image: none;
-    background: linear-gradient(to bottom, #1a1d23 0%, #151820 100%);
+  background: #121212;
   }
 
   /**
@@ -190,11 +198,204 @@
     font-size: var(--text-base);
     font-weight: var(--font-weight-medium);
     line-height: 1.5;
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+  }
+
+  a[href],
+  [role='button'] {
+    cursor: pointer;
   }
 
   input {
     font-size: var(--text-base);
     font-weight: var(--font-weight-normal);
     line-height: 1.5;
+  }
+}
+
+/* ── Demo final-countdown (last 5 seconds) ─────────────────────────── */
+
+/* Animatable angle for the border light. Registering it as an <angle> lets us
+   animate the conic-gradient's start angle directly — so the ring shape stays
+   perfectly fixed to the pill and only the bright spot travels around it.
+   (Rotating the element itself would make the rectangle sweep outward.) */
+@property --countdown-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes countdown-travel {
+  to {
+    --countdown-angle: 360deg;
+  }
+}
+
+/* No `position` here on purpose: the pill is already `absolute` (Tailwind),
+   which is enough of a containing block for the ::before glow. Setting
+   position:relative here would override that utility and stretch the pill. */
+.countdown-danger {
+  border-color: transparent !important;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+}
+
+.countdown-danger::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--countdown-angle),
+    rgba(239, 68, 68, 0.18) 0deg,
+    rgba(239, 68, 68, 0.18) 250deg,
+    #ef4444 315deg,
+    #ffd9d9 345deg,
+    #ef4444 360deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: countdown-travel 1.6s linear infinite;
+  pointer-events: none;
+}
+
+/* Big centered number that pops in on each of the final ticks. */
+@keyframes countdown-pop {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  35% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.92;
+  }
+}
+
+.countdown-center-number {
+  display: block;
+  font-family: var(--font-ui);
+  color: #ef4444;
+  font-weight: 800;
+  /* line-height 1 + this cap-height trim keeps the digit optically centered:
+     sans digits sit high in their line box, so we shave the empty space. */
+  line-height: 0.75;
+  letter-spacing: -0.02em;
+  text-shadow: 0 0 48px rgba(239, 68, 68, 0.5), 0 8px 28px rgba(0, 0, 0, 0.18);
+  animation: countdown-pop 1s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .countdown-danger::before,
+  .countdown-center-number {
+    animation: none;
+  }
+}
+
+/* ── Session bootstrap mark loader ─────────────────────────────────── */
+/* Strict sequence: bottom in → top in → pause → top out → bottom out */
+
+@keyframes mark-draw-bottom {
+  0%,
+  100% {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0.4;
+  }
+  4% {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0.4;
+  }
+  18% {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+  56% {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+  70% {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0.4;
+  }
+  88% {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0.4;
+  }
+}
+
+@keyframes mark-draw-top {
+  0%,
+  22% {
+    clip-path: inset(0 0 0 100%);
+    opacity: 0.4;
+  }
+  36% {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+  46% {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+  56% {
+    clip-path: inset(0 0 0 100%);
+    opacity: 0.4;
+  }
+  100% {
+    clip-path: inset(0 0 0 100%);
+    opacity: 0.4;
+  }
+}
+
+@keyframes mark-dot-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translateY(-5px);
+    opacity: 1;
+  }
+}
+
+.animate-mark-draw-bottom {
+  animation: mark-draw-bottom 4.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-mark-draw-top {
+  animation: mark-draw-top 4.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-mark-dot-1 {
+  animation: mark-dot-bounce 1.8s ease-in-out infinite;
+}
+
+.animate-mark-dot-2 {
+  animation: mark-dot-bounce 1.8s ease-in-out infinite 0.2s;
+}
+
+.animate-mark-dot-3 {
+  animation: mark-dot-bounce 1.8s ease-in-out infinite 0.4s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-mark-draw-bottom,
+  .animate-mark-draw-top,
+  .animate-mark-dot-1,
+  .animate-mark-dot-2,
+  .animate-mark-dot-3 {
+    animation: none;
+    clip-path: none;
+    opacity: 1;
   }
 }

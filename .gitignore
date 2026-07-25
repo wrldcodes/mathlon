@@ -16,7 +16,7 @@ yarn-error.log*
 pnpm-debug.log*
 *.log
 
-# env files
+# env files (never commit secrets)
 .env
 .env.local
 .env.development.local
@@ -26,10 +26,19 @@ pnpm-debug.log*
 # misc
 .DS_Store
 Thumbs.db
+*.tsbuildinfo
 
-# editor/ide
+# editor / agent tooling (local only)
 .vscode/
 .idea/
+.cursor/
+.claude/
+.agent-tmp/
+opencode.json
+
+# design prototypes / non-app packages (not for product deploy)
+figma-html/
+remotion/
 
 temp_auto_push.bat
 temp_interactive_push.bat

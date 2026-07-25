@@ -18,7 +18,8 @@ export function MessageHistory({ messages }: MessageHistoryProps) {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-24 right-6 z-30 p-3 rounded-full bg-accent hover:bg-accent/80 text-accent-foreground shadow-lg border border-border"
+        className="p-2.5 rounded-lg hover:bg-accent text-muted-foreground hover:text-foreground transition-colors"
+        title="Conversation history"
       >
         <History className="w-5 h-5" />
       </motion.button>

@@ -1,3 +1,158 @@
 @import './fonts.css';
 @import './tailwind.css';
 @import './theme.css';
+@import 'katex/dist/katex.min.css';
+
+/* Teaching-board LaTeX (KaTeX overlay, follows pan/zoom) */
+.mathlon-latex-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.mathlon-latex-world {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+.mathlon-latex-step-box {
+  position: absolute;
+  box-sizing: border-box;
+  padding: 28px 40px 16px;
+  color: var(--foreground, #2d2d2d);
+  line-height: 1.45;
+  font-size: 1.35rem;
+}
+
+.mathlon-latex-step .mathlon-katex-display {
+  margin: 0.15em 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.mathlon-latex-step .mathlon-katex-display > .katex-display {
+  margin: 0.35em 0;
+}
+
+.mathlon-latex-step .mathlon-latex-prose {
+  font-family: Caveat, Kalam, cursive;
+  font-size: 1.5rem;
+  white-space: pre-wrap;
+}
+
+.mathlon-latex-step .mathlon-latex-fallback {
+  font-family: ui-monospace, monospace;
+  font-size: 0.95rem;
+  opacity: 0.85;
+}
+
+html.dark .mathlon-latex-step-box,
+.dark .mathlon-latex-step-box {
+  color: #f0f0f0;
+}
+
+html.dark .mathlon-latex-step .katex,
+.dark .mathlon-latex-step .katex {
+  color: #f0f0f0;
+}
+
+/* Structured matrix grids (annotate-friendly) */
+.mathlon-matrix-block {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0.25em 0;
+  vertical-align: middle;
+}
+
+.mathlon-matrix-label {
+  font-family: Caveat, Kalam, cursive;
+  font-size: 1.55rem;
+  white-space: nowrap;
+}
+
+.mathlon-matrix-brackets {
+  display: inline-flex;
+  align-items: stretch;
+  gap: 0.15rem;
+}
+
+.mathlon-matrix-bracket {
+  width: 10px;
+  border-color: currentColor;
+  border-style: solid;
+  opacity: 0.9;
+}
+
+.mathlon-matrix-bracket-left {
+  border-width: 2.5px 0 2.5px 2.5px;
+  border-radius: 6px 0 0 6px;
+}
+
+.mathlon-matrix-bracket-right {
+  border-width: 2.5px 2.5px 2.5px 0;
+  border-radius: 0 6px 6px 0;
+}
+
+.mathlon-matrix-table {
+  border-collapse: separate;
+  border-spacing: 0.55rem 0.35rem;
+  font-size: 1.15rem;
+}
+
+.mathlon-matrix-cell {
+  text-align: center;
+  padding: 0.15rem 0.4rem;
+  min-width: 1.4em;
+  position: relative;
+}
+
+/* Annotation marks — use --canvas-annotate (high contrast on cream / dark boards) */
+.mathlon-ann-step.mathlon-ann-box {
+  outline: 3px solid var(--canvas-annotate, #c2410c);
+  outline-offset: 4px;
+  border-radius: 12px;
+}
+
+.mathlon-ann-step.mathlon-ann-circle {
+  outline: 3px solid var(--canvas-annotate, #c2410c);
+  outline-offset: 6px;
+  border-radius: 50%;
+}
+
+.mathlon-matrix-cell.mathlon-ann-box,
+.mathlon-ann-mark.mathlon-ann-box {
+  box-shadow: inset 0 0 0 2.5px var(--canvas-annotate, #c2410c);
+  border-radius: 8px;
+  background: var(--canvas-annotate-fill, rgba(194, 65, 12, 0.12));
+}
+
+.mathlon-matrix-cell.mathlon-ann-circle,
+.mathlon-ann-mark.mathlon-ann-circle {
+  box-shadow: inset 0 0 0 2.5px var(--canvas-annotate, #c2410c);
+  border-radius: 999px;
+  background: var(--canvas-annotate-fill, rgba(194, 65, 12, 0.12));
+}
+
+.mathlon-matrix-cell.mathlon-ann-underline,
+.mathlon-ann-mark.mathlon-ann-underline {
+  box-shadow: inset 0 -3px 0 var(--canvas-annotate, #c2410c);
+}
+
+.mathlon-matrix-cell[data-ann-label]::after,
+.mathlon-ann-mark[data-ann-label]::after {
+  content: attr(data-ann-label);
+  position: absolute;
+  left: calc(100% + 6px);
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: Caveat, Kalam, cursive;
+  font-size: 1.1rem;
+  color: var(--canvas-annotate, #c2410c);
+  white-space: nowrap;
+}

@@ -1,10 +1,14 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import '../styles/index.css';
+import { AppProviders } from './providers/AppProviders';
 
 export const metadata: Metadata = {
-  title: 'Math Teacher AI',
-  description: 'Making complex math simple',
+  title: {
+    default: 'Mathlon',
+    template: '%s · Mathlon',
+  },
+  description: 'Learn math with an interactive AI tutor.',
 };
 
 export default function RootLayout({
@@ -14,7 +18,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <AppProviders>{children}</AppProviders>
+      </body>
     </html>
   );
 }

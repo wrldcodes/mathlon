@@ -1,0 +1,45 @@
+<svg width="400" height="400" viewBox="0 0 400 400" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>Lightbulb idea</title>
+<desc>Hand-drawn glowing lightbulb with rays, suggesting an idea</desc>
+<defs>
+  <style>
+    .ink { stroke: #1a1a2e; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    .lbl { font-family: 'Patrick Hand','Caveat',cursive; fill: #1a1a2e; font-size: 13px; }
+  </style>
+</defs>
+
+<!-- glow rays -->
+<path d="M200 60 L200 30" class="ink" stroke-width="2" style="stroke:#f0b840"/>
+<path d="M134 84 L114 60" class="ink" stroke-width="2" style="stroke:#f0b840"/>
+<path d="M266 84 L286 60" class="ink" stroke-width="2" style="stroke:#f0b840"/>
+<path d="M104 150 L74 138" class="ink" stroke-width="2" style="stroke:#f0b840"/>
+<path d="M296 150 L326 138" class="ink" stroke-width="2" style="stroke:#f0b840"/>
+
+<!-- bulb glass -->
+<path d="M200 72 Q150 72 134 116 Q122 152 140 188 Q152 212 162 232 Q166 246 168 258 Q172 262 200 262 Q228 262 232 258 Q234 246 238 232 Q248 212 260 188 Q278 152 266 116 Q250 72 200 72Z"
+      class="ink" stroke-width="2.4" fill="#fdf3c8" style="fill:#fdf3c8"/>
+
+<!-- inner glass shine -->
+<path d="M176 110 Q166 130 172 156" class="ink" stroke-width="1.2" style="stroke:#f0d878"/>
+<path d="M188 104 Q180 128 184 158" class="ink" stroke-width="1" style="stroke:#f0d878"/>
+
+<!-- filament -->
+<path d="M180 196 Q188 178 200 192 Q212 178 220 196" class="ink" stroke-width="1.6" style="stroke:#e8843a"/>
+<path d="M200 192 L200 210" class="ink" stroke-width="1.4" style="stroke:#e8843a"/>
+
+<!-- screw base -->
+<path d="M170 262 Q200 268 230 262 Q230 268 228 272 Q200 278 172 272 Q170 268 170 262Z"
+      class="ink" stroke-width="1.8" fill="#c9ccd2" style="fill:#c9ccd2"/>
+<path d="M174 278 Q200 284 226 278 Q226 284 224 288 Q200 294 176 288 Q174 284 174 278Z"
+      class="ink" stroke-width="1.6" fill="#b4b8c0" style="fill:#b4b8c0"/>
+<path d="M180 294 Q200 300 220 294 Q216 308 200 310 Q184 308 180 294Z"
+      class="ink" stroke-width="1.6" fill="#a0a4ad" style="fill:#a0a4ad"/>
+
+<!-- base threads -->
+<path d="M172 268 Q200 273 228 268" class="ink" stroke-width="0.8" style="stroke:#888"/>
+<path d="M176 284 Q200 289 224 284" class="ink" stroke-width="0.8" style="stroke:#888"/>
+
+<!-- tiny sparkle -->
+<path d="M300 200 L303 192 L306 200 L314 203 L306 206 L303 214 L300 206 L292 203Z"
+      class="ink" stroke-width="0.9" fill="#f5c040" style="fill:#f5c040"/>
+</svg>

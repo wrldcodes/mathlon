@@ -1,0 +1,62 @@
+<svg width="400" height="400" viewBox="0 0 400 400" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>Infinity illustration</title>
+<desc>Hand-drawn infinity symbol with primes and number line</desc>
+<defs>
+  <style>
+    .ink { stroke: #1a1a2e; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    .lbl { font-family: 'Patrick Hand', 'Caveat', cursive; fill: #1a1a2e; font-size: 15px; }
+    .eq  { font-family: 'Patrick Hand', 'Caveat', cursive; fill: #1a1a2e; font-size: 13px; font-style: italic; }
+  </style>
+  <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5"
+          markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#1a1a2e" stroke-width="1.8"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+
+<!-- Big sketchy infinity symbol -->
+<path d="M110 200 Q108 155 140 148 Q175 140 200 190 Q225 240 260 245 Q295 248 295 200 Q295 152 262 148 Q228 144 200 190 Q172 236 142 242 Q108 248 110 200Z"
+      class="ink" stroke-width="3.5" fill="#fdebd0" style="fill:#fdebd0"/>
+
+<!-- inner loop shading lines for texture -->
+<path d="M138 185 Q155 175 168 185" class="ink" stroke-width="0.8" style="stroke:#c8a96e"/>
+<path d="M135 195 Q152 186 168 196" class="ink" stroke-width="0.8" style="stroke:#c8a96e"/>
+<path d="M232 195 Q248 185 264 195" class="ink" stroke-width="0.8" style="stroke:#c8a96e"/>
+<path d="M234 205 Q250 196 265 206" class="ink" stroke-width="0.8" style="stroke:#c8a96e"/>
+
+<!-- number line below -->
+<line x1="60" y1="300" x2="340" y2="300" class="ink" stroke-width="1.8"
+      marker-end="url(#arr)" marker-start="url(#arr)"/>
+
+<!-- ticks and numbers -->
+<line x1="100" y1="295" x2="100" y2="308" class="ink" stroke-width="1.4"/>
+<line x1="150" y1="295" x2="150" y2="308" class="ink" stroke-width="1.4"/>
+<line x1="200" y1="295" x2="200" y2="308" class="ink" stroke-width="1.4"/>
+<line x1="250" y1="295" x2="250" y2="308" class="ink" stroke-width="1.4"/>
+<line x1="300" y1="295" x2="300" y2="308" class="ink" stroke-width="1.4"/>
+
+<text x="96"  y="322" class="eq">1</text>
+<text x="146" y="322" class="eq">2</text>
+<text x="196" y="322" class="eq">3</text>
+<text x="246" y="322" class="eq">5</text>
+<text x="296" y="322" class="eq">7</text>
+<text x="60"  y="322" class="eq" style="font-size:11px;fill:#888">0</text>
+
+<!-- prime labels with circles -->
+<circle cx="150" cy="300" r="10" class="ink" stroke-width="1.2" fill="none" style="stroke:#e74c3c"/>
+<circle cx="200" cy="300" r="10" class="ink" stroke-width="1.2" fill="none" style="stroke:#e74c3c"/>
+<circle cx="250" cy="300" r="10" class="ink" stroke-width="1.2" fill="none" style="stroke:#e74c3c"/>
+<circle cx="300" cy="300" r="10" class="ink" stroke-width="1.2" fill="none" style="stroke:#e74c3c"/>
+
+<text x="108" y="280" class="eq" style="font-size:11px;fill:#e74c3c">primes →</text>
+
+<!-- ∞ label -->
+<text x="184" y="172" class="lbl" style="font-size:40px;fill:#1a1a2e;opacity:0.12">∞</text>
+
+<!-- note scrawl -->
+<text x="95" y="360" class="eq" style="font-size:12px;fill:#888">infinitely many primes!</text>
+<path d="M93 352 Q92 344 100 340" class="ink" stroke-width="1" style="stroke:#aaa"/>
+
+
+
+</svg>

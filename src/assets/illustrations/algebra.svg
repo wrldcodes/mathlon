@@ -1,0 +1,64 @@
+<svg width="400" height="400" viewBox="0 0 400 400" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>Algebra illustration</title>
+<desc>Hand-drawn parabola on coordinate axes with roots and vertex labeled</desc>
+<defs>
+  <style>
+    .ink { stroke: #1a1a2e; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    .eq  { font-family: 'Patrick Hand', 'Caveat', cursive; fill: #1a1a2e; font-size: 13px; font-style: italic; }
+    .lbl { font-family: 'Patrick Hand', 'Caveat', cursive; fill: #1a1a2e; font-size: 13px; }
+  </style>
+  <marker id="arr2" viewBox="0 0 10 10" refX="8" refY="5"
+          markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#1a1a2e" stroke-width="1.8"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+
+<!-- y axis -->
+<path d="M180 340 Q179 200 182 55" class="ink" stroke-width="1.8" marker-end="url(#arr2)"/>
+<!-- x axis -->
+<path d="M55 230 Q180 228 345 231" class="ink" stroke-width="1.8" marker-end="url(#arr2)"/>
+
+<!-- axis labels -->
+<text x="348" y="238" class="eq">x</text>
+<text x="186" y="52" class="eq">y</text>
+
+<!-- parabola curve, sketchy -->
+<path d="M100 320 Q108 290 130 252 Q155 210 182 195 Q210 180 238 195 Q268 212 288 252 Q308 288 316 318"
+      class="ink" stroke-width="2.4" style="stroke:#e74c3c"/>
+
+<!-- fill under curve, light -->
+<path d="M100 320 Q108 290 130 252 Q155 210 182 195 Q210 180 238 195 Q268 212 288 252 Q308 288 316 318 L316 230 L100 230Z"
+      style="fill:#fde8e8;stroke:none" fill="#fde8e8"/>
+
+<!-- vertex dot -->
+<circle cx="182" cy="193" r="5" style="fill:#e74c3c;stroke:#1a1a2e;stroke-width:1.4"/>
+<text x="188" y="188" class="eq" style="fill:#e74c3c">vertex</text>
+
+<!-- roots (x-intercepts) -->
+<circle cx="112" cy="230" r="5" style="fill:#2980b9;stroke:#1a1a2e;stroke-width:1.4"/>
+<circle cx="254" cy="230" r="5" style="fill:#2980b9;stroke:#1a1a2e;stroke-width:1.4"/>
+<text x="98"  y="250" class="eq" style="fill:#2980b9">x₁</text>
+<text x="248" y="250" class="eq" style="fill:#2980b9">x₂</text>
+
+<!-- axis of symmetry dashed -->
+<line x1="182" y1="193" x2="182" y2="230" class="ink" stroke-width="1.1" stroke-dasharray="4,3" style="stroke:#888"/>
+<text x="185" y="222" class="eq" style="font-size:10px;fill:#888">axis</text>
+
+<!-- formula box -->
+<rect x="270" y="115" width="108" height="40" rx="4"
+      style="fill:#fffef5;stroke:#ccc;stroke-width:1"/>
+<text x="278" y="133" class="eq">y = x² − bx + c</text>
+<text x="278" y="149" class="lbl" style="font-size:10px;fill:#888">quadratic!</text>
+
+<!-- tick marks on axes -->
+<line x1="112" y1="226" x2="112" y2="234" class="ink" stroke-width="1.2"/>
+<line x1="254" y1="226" x2="254" y2="234" class="ink" stroke-width="1.2"/>
+
+
+
+<!-- scrawl note -->
+<text x="58" y="175" class="eq" style="font-size:11px;fill:#888">opens upward</text>
+<path d="M95 170 Q108 185 112 200" class="ink" stroke-width="0.9" style="stroke:#bbb" marker-end="url(#arr2)"/>
+
+</svg>
