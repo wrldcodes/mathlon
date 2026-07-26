@@ -12,14 +12,28 @@ function createClientPromise(): Promise<MongoClient> {
   if (!uri) {
     throw new Error('Missing MONGODB_URI. Add it to .env.local to enable sessions.');
   }
-  const client = new MongoClient(uri);
+  const client = new MongoClient(uri, {
+    connectTimeoutMS: 10_000,
+    serverSelectionTimeoutMS: 10_000,
+    heartbeatFrequencyMS: 30_000,
+  });
   return client.connect();
 }
 
-function getClientPromise(): Promise<MongoClient> {
-  if (!global._mongoClientPromise) {
-    global._mongoClientPromise = createClientPromise();
+async function getClientPromise(): Promise<MongoClient> {
+  if (global._mongoClientPromise) {
+    try {
+      const client = await global._mongoClientPromise;
+      // If the cached client is still connected, reuse it.
+      if (client.topology?.isConnected()) return client;
+    } catch {
+      // Connection failed — fall through to create a new one.
+    }
+    // Stale or broken — clear the cache.
+    global._mongoClientPromise = undefined;
   }
+
+  global._mongoClientPromise = createClientPromise();
   return global._mongoClientPromise;
 }
 
