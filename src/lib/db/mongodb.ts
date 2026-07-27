@@ -23,14 +23,11 @@ function createClientPromise(): Promise<MongoClient> {
 async function getClientPromise(): Promise<MongoClient> {
   if (global._mongoClientPromise) {
     try {
-      const client = await global._mongoClientPromise;
-      // If the cached client is still connected, reuse it.
-      if (client.topology?.isConnected()) return client;
+      return await global._mongoClientPromise;
     } catch {
-      // Connection failed — fall through to create a new one.
+      // Stale or broken — clear the cache and create a new one.
+      global._mongoClientPromise = undefined;
     }
-    // Stale or broken — clear the cache.
-    global._mongoClientPromise = undefined;
   }
 
   global._mongoClientPromise = createClientPromise();
