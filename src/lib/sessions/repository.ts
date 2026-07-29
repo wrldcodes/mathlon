@@ -1,6 +1,6 @@
-import { ObjectId, type Collection, type WithId } from 'mongodb';
-import { getDb } from '../db/mongodb';
-import { getDemoDurationSeconds } from './demo';
+import { ObjectId, type Collection, type WithId } from "mongodb";
+import { getDb } from "../db/mongodb";
+import { getDemoDurationSeconds } from "./demo";
 import type {
   CreateSessionInput,
   PersistedCanvasState,
@@ -8,7 +8,7 @@ import type {
   SessionStatus,
   TeachingSession,
   UpdateSessionInput,
-} from './types';
+} from "./types";
 
 type SessionDoc = {
   userId: string;
@@ -27,7 +27,7 @@ type SessionDoc = {
 
 type SessionRecord = SessionDoc & { _id: ObjectId };
 
-const COLLECTION = 'sessions';
+const COLLECTION = "sessions";
 const useMemoryStore = !process.env.MONGODB_URI;
 const memorySessions = new Map<string, SessionRecord>();
 
@@ -63,7 +63,10 @@ async function readSessionRecords(): Promise<SessionRecord[]> {
   return (await col.find().toArray()) as SessionRecord[];
 }
 
-async function readSessionRecord(sessionId: string, userId?: string): Promise<SessionRecord | null> {
+async function readSessionRecord(
+  sessionId: string,
+  userId?: string,
+): Promise<SessionRecord | null> {
   if (useMemoryStore) {
     const record = memorySessions.get(sessionId);
     if (!record) return null;
@@ -73,7 +76,9 @@ async function readSessionRecord(sessionId: string, userId?: string): Promise<Se
 
   if (!ObjectId.isValid(sessionId)) return null;
   const col = await sessions();
-  const filter: { _id: ObjectId; userId?: string } = { _id: new ObjectId(sessionId) };
+  const filter: { _id: ObjectId; userId?: string } = {
+    _id: new ObjectId(sessionId),
+  };
   if (userId) filter.userId = userId;
   return (await col.findOne(filter)) as SessionRecord | null;
 }
@@ -96,18 +101,22 @@ async function writeSessionRecord(doc: SessionDoc): Promise<SessionRecord> {
  * every teammate share one session list.
  */
 export function requireUserId(userId: string | null | undefined): string {
-  const id = userId?.trim() ?? '';
+  const id = userId?.trim() ?? "";
   if (!id) {
-    throw new Error('Missing browser user id. Refresh the page and try again.');
+    throw new Error("Missing browser user id. Refresh the page and try again.");
   }
   return id;
 }
 
-export async function createSession(input: CreateSessionInput): Promise<TeachingSession> {
+export async function createSession(
+  input: CreateSessionInput,
+): Promise<TeachingSession> {
   const now = new Date();
-  const prompt = (input.prompt ?? '').trim();
-  const entryMode: SessionEntryMode = input.entryMode ?? (prompt ? 'text-first' : 'mic-first');
-  const title = input.title.trim() || (prompt ? prompt.slice(0, 42) : 'New session');
+  const prompt = (input.prompt ?? "").trim();
+  const entryMode: SessionEntryMode =
+    input.entryMode ?? (prompt ? "text-first" : "mic-first");
+  const title =
+    input.title.trim() || (prompt ? prompt.slice(0, 42) : "New session");
   const isDemo = Boolean(input.demo);
 
   const record = await writeSessionRecord({
@@ -115,9 +124,11 @@ export async function createSession(input: CreateSessionInput): Promise<Teaching
     title,
     prompt,
     entryMode,
-    status: 'created',
+    status: "created",
     demo: isDemo,
-    demoExpiresAt: isDemo ? new Date(now.getTime() + getDemoDurationSeconds() * 1000) : undefined,
+    demoExpiresAt: isDemo
+      ? new Date(now.getTime() + getDemoDurationSeconds() * 1000)
+      : undefined,
     createdAt: now,
     updatedAt: now,
   });
@@ -147,13 +158,14 @@ export async function updateSession(
     updatedAt: now,
   };
 
-  if (input.title !== undefined) next.title = input.title.trim() || 'New session';
+  if (input.title !== undefined)
+    next.title = input.title.trim() || "New session";
   if (input.providerConversationId !== undefined) {
     next.providerConversationId = input.providerConversationId;
   }
   if (input.status !== undefined) {
     next.status = input.status;
-    if (input.status === 'ended') next.endedAt = now;
+    if (input.status === "ended") next.endedAt = now;
   }
   if (input.canvasState === null) {
     delete next.canvasState;
@@ -176,7 +188,10 @@ export async function updateSession(
   return toSession(next);
 }
 
-export async function listSessionsForUser(userId: string, limit = 50): Promise<TeachingSession[]> {
+export async function listSessionsForUser(
+  userId: string,
+  limit = 50,
+): Promise<TeachingSession[]> {
   const docs = await readSessionRecords();
   return docs
     .filter((doc) => doc.userId === requireUserId(userId))
@@ -185,7 +200,10 @@ export async function listSessionsForUser(userId: string, limit = 50): Promise<T
     .map(toSession);
 }
 
-export async function deleteSession(sessionId: string, userId?: string): Promise<boolean> {
+export async function deleteSession(
+  sessionId: string,
+  userId?: string,
+): Promise<boolean> {
   if (useMemoryStore) {
     const record = memorySessions.get(sessionId);
     if (!record) return false;
@@ -195,7 +213,9 @@ export async function deleteSession(sessionId: string, userId?: string): Promise
 
   if (!ObjectId.isValid(sessionId)) return false;
   const col = await sessions();
-  const filter: { _id: ObjectId; userId?: string } = { _id: new ObjectId(sessionId) };
+  const filter: { _id: ObjectId; userId?: string } = {
+    _id: new ObjectId(sessionId),
+  };
   if (userId) filter.userId = userId;
   const result = await col.deleteOne(filter);
   return result.deletedCount === 1;

@@ -25,7 +25,7 @@ export function ManageAccountPage() {
       />
 
       <div className="flex-1 min-w-0 flex flex-col overflow-y-auto">
-        <div className="px-14 pt-10 pb-16 max-w-[1100px]">
+        <div className="w-full max-w-[1200px] mx-auto px-14 pt-10 pb-16">
           <h1 className="text-[32px] font-semibold tracking-tight text-foreground">
             Manage account
           </h1>

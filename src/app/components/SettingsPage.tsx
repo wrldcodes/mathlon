@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { X } from 'lucide-react';
-import { AppSidebar } from './AppSidebar';
-import { useDisplayName } from '../hooks/useDisplayName';
-import { ThemeToggle } from './ThemeToggle';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { X } from "lucide-react";
+import { AppSidebar } from "./AppSidebar";
+import { useDisplayName } from "../hooks/useDisplayName";
+import { ThemeToggle } from "./ThemeToggle";
 
 interface SettingsRowProps {
   label: string;
@@ -51,12 +51,12 @@ function Toggle({
       aria-checked={checked}
       onClick={() => onCheckedChange(!checked)}
       className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
-        checked ? 'bg-primary' : 'bg-switch-background'
+        checked ? "bg-primary" : "bg-switch-background"
       }`}
     >
       <span
-        className={`pointer-events-none block h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition-transform ${
-          checked ? 'translate-x-5' : 'translate-x-0.5'
+        className={`pointer-events-none absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition-transform ${
+          checked ? "translate-x-5" : "translate-x-0"
         }`}
       />
     </button>
@@ -87,7 +87,7 @@ export function SettingsPage() {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const [signOutOpen, setSignOutOpen] = useState(false);
 
-  const [theme, setTheme] = useState('System');
+  const [theme, setTheme] = useState("System");
 
   return (
     <div className="min-h-screen h-screen flex bg-background text-foreground overflow-hidden">
@@ -97,11 +97,11 @@ export function SettingsPage() {
         onExpandedChange={setSidebarExpanded}
         currentSessionTitle={null}
         isSessionActive={false}
-        onNewSession={() => router.push('/')}
+        onNewSession={() => router.push("/")}
       />
 
       <div className="flex-1 min-w-0 flex flex-col overflow-y-auto">
-        <div className="px-14 pt-10 pb-16">
+        <div className="w-full max-w-[1200px] mx-auto px-14 pt-10 pb-16">
           <h1 className="text-[32px] font-semibold tracking-tight text-foreground">
             Settings
           </h1>
@@ -118,7 +118,7 @@ export function SettingsPage() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-base font-semibold text-foreground">
-                    {displayName || 'User'}
+                    {displayName || "User"}
                   </p>
                   <p className="text-[13px] text-muted-foreground">
                     user@email.com · Free plan
@@ -126,7 +126,7 @@ export function SettingsPage() {
                 </div>
                 <button
                   type="button"
-                  onClick={() => router.push('/settings/account')}
+                  onClick={() => router.push("/settings/account")}
                   className="h-[34px] px-4 rounded-lg bg-card text-foreground text-[13px] font-medium border border-border hover:bg-accent transition-colors"
                 >
                   Manage account
@@ -138,11 +138,11 @@ export function SettingsPage() {
             <div
               role="button"
               tabIndex={0}
-              onClick={() => router.push('/settings/learning')}
+              onClick={() => router.push("/settings/learning")}
               onKeyDown={(event) => {
-                if (event.key === 'Enter' || event.key === ' ') {
+                if (event.key === "Enter" || event.key === " ") {
                   event.preventDefault();
-                  router.push('/settings/learning');
+                  router.push("/settings/learning");
                 }
               }}
               className="bg-card border border-border rounded-2xl overflow-hidden text-left hover:bg-accent/50 transition-colors cursor-pointer"
@@ -197,7 +197,7 @@ export function SettingsPage() {
                     <SelectButton
                       value={theme}
                       onClick={() => {
-                        const themes = ['System', 'Light', 'Dark'];
+                        const themes = ["System", "Light", "Dark"];
                         const idx = themes.indexOf(theme);
                         setTheme(themes[(idx + 1) % themes.length]);
                       }}
@@ -210,7 +210,7 @@ export function SettingsPage() {
             {/* Voice & teaching card */}
             <button
               type="button"
-              onClick={() => router.push('/settings/voice')}
+              onClick={() => router.push("/settings/voice")}
               className="bg-card border border-border rounded-2xl overflow-hidden text-left hover:bg-accent/50 transition-colors"
             >
               <div className="px-5 pt-5 pb-4">
@@ -224,7 +224,9 @@ export function SettingsPage() {
               <div className="px-5 pb-5">
                 <div className="flex items-center justify-between py-4 border-t border-border first:border-t-0">
                   <div className="space-y-0.5">
-                    <p className="text-sm font-medium text-foreground">Voice sessions</p>
+                    <p className="text-sm font-medium text-foreground">
+                      Voice sessions
+                    </p>
                     <p className="text-[13px] text-muted-foreground">
                       Hold space to talk with Mathlon
                     </p>
@@ -246,8 +248,8 @@ export function SettingsPage() {
               <div className="px-5">
                 <button
                   type="button"
-                  onClick={() => router.push('/settings/billing')}
-                  className="group w-full flex items-center justify-between gap-4 rounded-xl border border-transparent px-4 py-4 text-left transition-all duration-200 hover:border-border/70 hover:bg-accent/40 hover:shadow-sm hover:-translate-y-0.5"
+                  onClick={() => router.push("/settings/billing")}
+                  className="group w-full flex items-center justify-between gap-4 border border-transparent px-4 py-4 text-left transition-all duration-200 hover:border-border/70 hover:bg-accent/40 hover:shadow-sm hover:-translate-y-0.5"
                 >
                   <div className="space-y-0.5">
                     <p className="text-sm font-medium text-foreground">
@@ -262,7 +264,9 @@ export function SettingsPage() {
                   </span>
                 </button>
                 <div className="flex items-center justify-between py-3 border-t border-border">
-                  <p className="text-sm font-medium text-foreground">Sign out</p>
+                  <p className="text-sm font-medium text-foreground">
+                    Sign out
+                  </p>
                   <button
                     type="button"
                     onClick={() => setSignOutOpen(true)}
@@ -294,7 +298,8 @@ export function SettingsPage() {
                 Sign out of Mathlon?
               </h2>
               <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
-                Your saved sessions and learning profile will stay available when you sign back in.
+                Your saved sessions and learning profile will stay available
+                when you sign back in.
               </p>
             </div>
 

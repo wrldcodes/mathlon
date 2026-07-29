@@ -23,8 +23,8 @@ function Toggle({ checked, onCheckedChange }: ToggleProps) {
       }`}
     >
       <span
-        className={`pointer-events-none block h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition-transform ${
-          checked ? 'translate-x-5' : 'translate-x-0.5'
+        className={`pointer-events-none absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition-transform ${
+          checked ? 'translate-x-5' : 'translate-x-0'
         }`}
       />
     </button>
@@ -111,7 +111,7 @@ export function VoiceSettingsPage() {
       />
 
       <div className="flex-1 min-w-0 flex flex-col overflow-y-auto">
-        <div className="px-14 pt-10 pb-16 max-w-[920px]">
+        <div className="w-full max-w-[1200px] mx-auto px-14 pt-10 pb-16">
           <h1 className="text-[32px] font-semibold tracking-tight text-foreground">
             Voice & teaching
           </h1>

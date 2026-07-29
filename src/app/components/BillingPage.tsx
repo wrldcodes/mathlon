@@ -1,22 +1,61 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { Plus, Check, X, ShieldCheck, ArrowRight, FileText } from 'lucide-react';
-import { AppSidebar } from '../components/AppSidebar';
-import { useDisplayName } from '../hooks/useDisplayName';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import {
+  Plus,
+  Check,
+  X,
+  ShieldCheck,
+  ArrowRight,
+  FileText,
+} from "lucide-react";
+import { AppSidebar } from "../components/AppSidebar";
+import { useDisplayName } from "../hooks/useDisplayName";
 
 const TOP_UP_OPTIONS = [
-  { id: '30', minutes: '+30 minutes', description: 'A couple of extra sessions', price: '$2' },
-  { id: '60', minutes: '+60 minutes', description: 'A full week of extra study', price: '$3.50', badge: 'Best value' },
-  { id: '120', minutes: '+120 minutes', description: 'For exam-season crunch', price: '$6' },
+  {
+    id: "30",
+    minutes: "+30 minutes",
+    description: "A couple of extra sessions",
+    price: "$2",
+  },
+  {
+    id: "60",
+    minutes: "+60 minutes",
+    description: "A full week of extra study",
+    price: "$3.50",
+    badge: "Best value",
+  },
+  {
+    id: "120",
+    minutes: "+120 minutes",
+    description: "For exam-season crunch",
+    price: "$6",
+  },
 ];
 
 const INVOICES = [
-  { date: 'Jul 1, 2026', description: 'Beta access · Monthly', amount: '$7.00' },
-  { date: 'Jun 14, 2026', description: 'Top-up · +60 minutes', amount: '$3.50' },
-  { date: 'Jun 1, 2026', description: 'Beta access · Monthly', amount: '$7.00' },
-  { date: 'May 1, 2026', description: 'Beta access · Monthly', amount: '$7.00' },
+  {
+    date: "Jul 1, 2026",
+    description: "Beta access · Monthly",
+    amount: "$7.00",
+  },
+  {
+    date: "Jun 14, 2026",
+    description: "Top-up · +60 minutes",
+    amount: "$3.50",
+  },
+  {
+    date: "Jun 1, 2026",
+    description: "Beta access · Monthly",
+    amount: "$7.00",
+  },
+  {
+    date: "May 1, 2026",
+    description: "Beta access · Monthly",
+    amount: "$7.00",
+  },
 ];
 
 export function BillingPage() {
@@ -24,7 +63,7 @@ export function BillingPage() {
   const { name: displayName, initial: displayInitial } = useDisplayName();
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const [topUpOpen, setTopUpOpen] = useState(false);
-  const [selectedTopUp, setSelectedTopUp] = useState('60');
+  const [selectedTopUp, setSelectedTopUp] = useState("60");
   const [historyOpen, setHistoryOpen] = useState(false);
   const [cancelOpen, setCancelOpen] = useState(false);
   const [paymentOpen, setPaymentOpen] = useState(false);
@@ -42,16 +81,18 @@ export function BillingPage() {
         onExpandedChange={setSidebarExpanded}
         currentSessionTitle={null}
         isSessionActive={false}
-        onNewSession={() => router.push('/')}
+        onNewSession={() => router.push("/")}
       />
 
       <div className="flex-1 min-w-0 flex flex-col overflow-y-auto">
-        <div className="px-14 pt-10 pb-16 max-w-[1100px]">
+        <div className="w-full max-w-[1200px] mx-auto px-14 pt-10 pb-16">
           <h1 className="text-[32px] font-semibold tracking-tight text-foreground">
             Billing & plans
           </h1>
           <p className="text-[15px] text-muted-foreground mt-2 max-w-[700px]">
-            You have paid Beta access. Every session is voice and canvas working together — you get a fresh 15 voice minutes every day, and can top up anytime you need more.
+            You have paid Beta access. Every session is voice and canvas working
+            together — you get a fresh 15 voice minutes every day, and can top
+            up anytime you need more.
           </p>
 
           <div className="mt-8 grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-5">
@@ -98,7 +139,9 @@ export function BillingPage() {
               {/* Info box */}
               <div className="mt-5 p-4 rounded-xl bg-[#f8f6f1] border border-[#ece7dc]">
                 <p className="text-[13px] text-[#5f6470] leading-relaxed">
-                  When you reach 15 minutes, your sessions pause. Top up more voice minutes to keep going today, or come back tomorrow for a fresh 15.
+                  When you reach 15 minutes, your sessions pause. Top up more
+                  voice minutes to keep going today, or come back tomorrow for a
+                  fresh 15.
                 </p>
               </div>
 
@@ -126,7 +169,9 @@ export function BillingPage() {
               <div className="mt-5 flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-foreground">Card</p>
-                  <p className="text-[13px] text-muted-foreground">Visa •••• 4242</p>
+                  <p className="text-[13px] text-muted-foreground">
+                    Visa •••• 4242
+                  </p>
                 </div>
                 <button
                   type="button"
@@ -140,8 +185,12 @@ export function BillingPage() {
               {/* Next charge */}
               <div className="mt-4 pt-4 border-t border-border flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-foreground">Next charge</p>
-                  <p className="text-[13px] text-muted-foreground">Aug 1, 2026</p>
+                  <p className="text-sm font-medium text-foreground">
+                    Next charge
+                  </p>
+                  <p className="text-[13px] text-muted-foreground">
+                    Aug 1, 2026
+                  </p>
                 </div>
                 <p className="text-[13px] font-medium text-foreground">$7</p>
               </div>
@@ -149,8 +198,12 @@ export function BillingPage() {
               {/* Billing history */}
               <div className="mt-4 pt-4 border-t border-border flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-foreground">Billing history</p>
-                  <p className="text-[13px] text-muted-foreground">Invoices & receipts</p>
+                  <p className="text-sm font-medium text-foreground">
+                    Billing history
+                  </p>
+                  <p className="text-[13px] text-muted-foreground">
+                    Invoices & receipts
+                  </p>
                 </div>
                 <button
                   type="button"
@@ -174,23 +227,26 @@ export function BillingPage() {
                   Beta access
                 </h2>
                 <p className="text-sm text-muted-foreground mt-2 max-w-[500px]">
-                  Founding pricing while we build toward launch. This rate is locked in for as long as you stay subscribed.
+                  Founding pricing while we build toward launch. This rate is
+                  locked in for as long as you stay subscribed.
                 </p>
 
                 {/* Features */}
                 <div className="mt-5 pt-5 border-t border-border flex flex-wrap gap-x-6 gap-y-3">
                   {[
-                    '15 voice minutes every day',
-                    'Canvas that draws as you talk',
-                    'Every step-by-step diagram',
-                    '30-day session history',
-                    'Top up minutes anytime',
+                    "15 voice minutes every day",
+                    "Canvas that draws as you talk",
+                    "Every step-by-step diagram",
+                    "30-day session history",
+                    "Top up minutes anytime",
                   ].map((feature) => (
                     <div key={feature} className="flex items-center gap-1.5">
                       <div className="w-4 h-4 rounded-md bg-[rgba(30,107,184,0.12)] flex items-center justify-center shrink-0">
                         <Check className="w-2.5 h-2.5 text-[#1e6bb8]" />
                       </div>
-                      <span className="text-[13px] text-foreground">{feature}</span>
+                      <span className="text-[13px] text-foreground">
+                        {feature}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -202,7 +258,10 @@ export function BillingPage() {
                   <span className="text-[32px] font-bold text-foreground leading-none">
                     $7
                   </span>
-                  <span className="text-sm text-muted-foreground"> / month</span>
+                  <span className="text-sm text-muted-foreground">
+                    {" "}
+                    / month
+                  </span>
                 </div>
                 <button
                   type="button"
@@ -218,9 +277,10 @@ export function BillingPage() {
           {/* Thank you note */}
           <p
             className="mt-6 text-[20px] text-[#5f6470]"
-            style={{ fontFamily: 'var(--font-handwritten)' }}
+            style={{ fontFamily: "var(--font-handwritten)" }}
           >
-            Thank you for backing Mathlon this early — this price is yours for life.
+            Thank you for backing Mathlon this early — this price is yours for
+            life.
           </p>
         </div>
       </div>
@@ -244,7 +304,9 @@ export function BillingPage() {
                 Top up voice minutes
               </h2>
               <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">
-                Extra minutes are used after your daily 15 run out, and don&apos;t expire — they stay on your balance until you use them.
+                Extra minutes are used after your daily 15 run out, and
+                don&apos;t expire — they stay on your balance until you use
+                them.
               </p>
             </div>
 
@@ -257,14 +319,18 @@ export function BillingPage() {
                   onClick={() => setSelectedTopUp(option.id)}
                   className={`flex items-center gap-3.5 px-[17px] py-3.5 rounded-[14px] border transition-colors text-left ${
                     selectedTopUp === option.id
-                      ? 'bg-[#faf9f6] border-foreground shadow-[inset_0px_0px_0px_2px_#030213]'
-                      : 'bg-card border-border hover:border-foreground/50'
+                      ? "bg-[#faf9f6] border-foreground shadow-[inset_0px_0px_0px_2px_#030213]"
+                      : "bg-card border-border hover:border-foreground/50"
                   }`}
                 >
                   {/* Radio */}
-                  <div className={`w-[18px] h-[18px] rounded-[9px] border-2 flex items-center justify-center shrink-0 ${
-                    selectedTopUp === option.id ? 'border-foreground' : 'border-[#c7c3ba]'
-                  }`}>
+                  <div
+                    className={`w-[18px] h-[18px] rounded-[9px] border-2 flex items-center justify-center shrink-0 ${
+                      selectedTopUp === option.id
+                        ? "border-foreground"
+                        : "border-[#c7c3ba]"
+                    }`}
+                  >
                     {selectedTopUp === option.id && (
                       <div className="w-2 h-2 rounded-[4px] bg-foreground" />
                     )}
@@ -352,15 +418,21 @@ export function BillingPage() {
                 <div
                   key={`${invoice.date}-${i}`}
                   className={`flex items-center justify-between py-4 ${
-                    i > 0 ? 'border-t border-border' : ''
+                    i > 0 ? "border-t border-border" : ""
                   }`}
                 >
                   <div className="min-w-0">
-                    <p className="text-sm font-medium text-foreground">{invoice.date}</p>
-                    <p className="text-[13px] text-muted-foreground">{invoice.description}</p>
+                    <p className="text-sm font-medium text-foreground">
+                      {invoice.date}
+                    </p>
+                    <p className="text-[13px] text-muted-foreground">
+                      {invoice.description}
+                    </p>
                   </div>
                   <div className="flex items-center gap-3 shrink-0 ml-4">
-                    <span className="text-sm font-medium text-foreground">{invoice.amount}</span>
+                    <span className="text-sm font-medium text-foreground">
+                      {invoice.amount}
+                    </span>
                     <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-[#e8f5e9] text-[11px] font-semibold text-[#2e7d32]">
                       Paid
                     </span>
@@ -400,7 +472,7 @@ export function BillingPage() {
       {/* Cancel plan modal */}
       {cancelOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/45">
-          <div className="bg-white rounded-2xl shadow-[0px_24px_60px_rgba(3,2,19,0.28)] w-[440px] overflow-hidden relative">
+          <div className="bg-white rounded-2xl shadow-[0px_24px_60px_rgba(3,2,19,0.28)] w-[480px] overflow-hidden relative">
             <button
               type="button"
               onClick={() => setCancelOpen(false)}
@@ -414,31 +486,33 @@ export function BillingPage() {
                 Cancel Beta access?
               </h2>
               <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
-                If you cancel, you lose your founding rate — and if you rejoin later, the price may have changed. Here&apos;s what happens next:
+                You&apos;ll keep access until the end of your billing period on Aug 1, 2026. After that, your sessions stop.
               </p>
             </div>
 
             <div className="px-6 py-4">
-              <p className="text-xs font-semibold text-foreground uppercase tracking-wider mb-3">
-                If you cancel, you lose
-              </p>
-              <div className="space-y-2.5">
-                {[
-                  { text: 'Your 15 voice minutes/day', highlight: false },
-                  { text: 'Any unused top-up balance', subtext: 'A credit keeps your plan active through the end of the month', highlight: false },
-                  { text: 'Canvas that draws as you talk', highlight: false },
-                  { text: 'Session history (30-day window)', highlight: false },
-                ].map((item, i) => (
-                  <div key={i} className="flex items-start gap-2.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-foreground/40 mt-1.5 shrink-0" />
-                    <div>
-                      <p className="text-sm text-foreground">{item.text}</p>
-                      {item.subtext && (
-                        <p className="text-[13px] text-muted-foreground mt-0.5">{item.subtext}</p>
-                      )}
+              <div className="bg-[#fef2f2] border border-[#fecaca] rounded-xl p-4">
+                <p className="text-sm font-semibold text-[#991b1b] mb-3">
+                  If you cancel, you&apos;ll lose:
+                </p>
+                <div className="space-y-2.5">
+                  {[
+                    "Your 15 daily voice minutes & the canvas tutor",
+                    { text: "Your $7 founding price — ", bold: "it won't come back" },
+                    "Any topped-up minutes left on your balance",
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-start gap-2.5">
+                      <div className="w-5 h-5 rounded-full bg-[#fee2e2] flex items-center justify-center shrink-0 mt-0.5">
+                        <X className="w-3 h-3 text-[#dc2626]" />
+                      </div>
+                      <p className="text-sm text-[#991b1b]">
+                        {typeof item === 'string' ? item : (
+                          <>{item.text}<span className="font-bold">{item.bold}</span></>
+                        )}
+                      </p>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -448,14 +522,14 @@ export function BillingPage() {
                 onClick={() => setCancelOpen(false)}
                 className="h-10 px-5 rounded-xl text-sm font-medium border border-border text-foreground hover:bg-accent transition-colors"
               >
-                Keep my plan
+                Cancel anyway
               </button>
               <button
                 type="button"
                 onClick={() => setCancelOpen(false)}
-                className="h-10 px-5 rounded-xl text-sm font-medium bg-[#d4183d] text-white hover:bg-[#b91c3a] transition-colors"
+                className="h-10 px-5 rounded-xl text-sm font-semibold bg-[#18181b] text-white hover:bg-[#27272a] transition-colors"
               >
-                Yes, cancel plan
+                Keep my access
               </button>
             </div>
           </div>
@@ -479,7 +553,8 @@ export function BillingPage() {
                 Update payment method
               </h2>
               <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
-                We&apos;ll take you to our secure payment partner to update your card. Mathlon never sees or stores your card details.
+                We&apos;ll take you to our secure payment partner to update your
+                card. Mathlon never sees or stores your card details.
               </p>
             </div>
 
@@ -488,11 +563,17 @@ export function BillingPage() {
               <div className="flex items-center justify-between p-4 rounded-xl border border-border bg-card">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-7 rounded bg-[#1a1f71] flex items-center justify-center">
-                    <span className="text-white text-[11px] font-bold italic">VISA</span>
+                    <span className="text-white text-[11px] font-bold italic">
+                      VISA
+                    </span>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-foreground">Visa •••• 4242</p>
-                    <p className="text-[13px] text-muted-foreground">Expires 08/27</p>
+                    <p className="text-sm font-medium text-foreground">
+                      Visa •••• 4242
+                    </p>
+                    <p className="text-[13px] text-muted-foreground">
+                      Expires 08/27
+                    </p>
                   </div>
                 </div>
                 <span className="px-2.5 py-1 rounded-full bg-[#f0f0f0] text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
