@@ -31,6 +31,8 @@ export function LevelSelectScreen({
     <OnboardingLayout
       step={currentStep}
       totalSteps={totalSteps}
+      height={691}
+      contentPaddingTop={4}
       title="What level are you studying?"
       subtitle="This helps Mathlon choose the right pace, notation, and examples."
       onBack={onBack}

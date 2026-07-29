@@ -406,6 +406,7 @@ export function AppSidebar({
                   </>
                 )}
                 <button
+                  onClick={() => router.push('/settings')}
                   className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors shrink-0"
                   title="Settings"
                 >
@@ -466,6 +467,7 @@ export function AppSidebar({
             </button>
             <div className="mt-auto flex flex-col items-center gap-2 mb-2">
               <button
+                onClick={() => router.push('/settings')}
                 className="p-2.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
                 title="Settings"
               >
