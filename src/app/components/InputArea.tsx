@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Mic, MicOff, Pause, Play, Send, Square, X } from 'lucide-react';
 import paperclipIcon from '../../assets/icons/paperclip.png';
+import { VoiceRecordingBar } from './VoiceRecordingBar';
 
 export interface VapiControls {
   isSessionActive: boolean;
@@ -29,6 +30,7 @@ export function InputArea({ onTextSubmit, vapiControls, disabled }: InputAreaPro
   const [input, setInput] = useState('');
   const [attachedImages, setAttachedImages] = useState<File[]>([]);
   const [composeExpanded, setComposeExpanded] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -153,8 +155,8 @@ export function InputArea({ onTextSubmit, vapiControls, disabled }: InputAreaPro
       void startSession();
       return;
     }
-    // Mic only mutes — never ends session
-    setMicMuted?.(!isMicMuted);
+    // Toggle recording state
+    setIsRecording(!isRecording);
   };
 
   const openCompose = () => {
@@ -256,21 +258,27 @@ export function InputArea({ onTextSubmit, vapiControls, disabled }: InputAreaPro
       title={
         !isSessionActive
           ? 'Start voice session'
-          : isPaused
-            ? 'Microphone muted while paused'
-            : isMicMuted
-              ? 'Unmute microphone'
-              : 'Mute microphone'
+          : isRecording
+            ? 'Stop recording'
+            : isPaused
+              ? 'Microphone muted while paused'
+              : isMicMuted
+                ? 'Unmute microphone'
+                : 'Mute microphone'
       }
       className={`p-2 rounded-full transition-colors disabled:opacity-40 ${
-        isSessionActive && !isPaused && !isMicMuted
-          ? 'bg-[#22c55e] hover:bg-green-600 text-white'
-          : isSessionActive && (isPaused || isMicMuted)
-            ? 'bg-muted text-muted-foreground'
-            : 'hover:bg-accent text-muted-foreground'
+        isRecording
+          ? 'bg-[#ef4444] hover:bg-[#dc2626] text-white'
+          : isSessionActive && !isPaused && !isMicMuted
+            ? 'bg-[#22c55e] hover:bg-green-600 text-white'
+            : isSessionActive && (isPaused || isMicMuted)
+              ? 'bg-muted text-muted-foreground'
+              : 'hover:bg-accent text-muted-foreground'
       }`}
     >
-      {isSessionActive && (isPaused || isMicMuted) ? (
+      {isRecording ? (
+        <div className="w-5 h-5 rounded-sm bg-white" />
+      ) : isSessionActive && (isPaused || isMicMuted) ? (
         <MicOff className="w-5 h-5" />
       ) : (
         <Mic className={`w-5 h-5 ${isSessionActive && !isPaused && !isMicMuted ? 'text-white' : ''}`} />
@@ -280,6 +288,22 @@ export function InputArea({ onTextSubmit, vapiControls, disabled }: InputAreaPro
 
   // Collapsed voice dock during live or paused session
   if (isSessionActive && !composeExpanded) {
+    // Show recording bar when actively recording
+    if (isRecording) {
+      return (
+        <VoiceRecordingBar
+          isRecording={isRecording}
+          onStop={() => {
+            setIsRecording(false);
+            // The recording is already being sent via the session
+          }}
+          onCancel={() => {
+            setIsRecording(false);
+          }}
+        />
+      );
+    }
+
     return (
       <div
         className={`w-full rounded-2xl backdrop-blur-xl border shadow-xl overflow-hidden ${
