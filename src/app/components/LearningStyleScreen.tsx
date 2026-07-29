@@ -3,29 +3,33 @@
 import { useState } from 'react';
 import { OnboardingLayout } from './OnboardingLayout';
 
-export type Level = 'foundations' | 'exam-prep' | 'university' | 'self-learner';
+type LearningStyle = {
+  id: string;
+  label: string;
+  description: string;
+};
 
-const LEVELS: { id: Level; label: string; description: string }[] = [
-  { id: 'foundations', label: 'Foundations', description: 'Arithmetic, algebra basics, and core skills' },
-  { id: 'exam-prep', label: 'Exam prep', description: 'Algebra, geometry, trig, and test practice' },
-  { id: 'university', label: 'University', description: 'Calculus, linear algebra, proofs' },
-  { id: 'self-learner', label: 'Self-learner', description: 'Flexible explanations at your pace' },
+const STYLES: LearningStyle[] = [
+  { id: 'step-by-step', label: 'Step-by-step', description: 'Break each solution into small checkpoints' },
+  { id: 'visual', label: 'Visual', description: 'Use diagrams and board layouts whenever useful' },
+  { id: 'practice-heavy', label: 'Practice-heavy', description: 'Ask you to try steps before revealing them' },
+  { id: 'mix-it-up', label: 'Mix it up', description: 'Adapt based on the question and your answers' },
 ];
 
-type LevelSelectScreenProps = {
+type LearningStyleScreenProps = {
   currentStep: number;
   totalSteps: number;
-  onContinue: (level: Level) => void;
+  onContinue: (style: string) => void;
   onBack: () => void;
 };
 
-export function LevelSelectScreen({
+export function LearningStyleScreen({
   currentStep,
   totalSteps,
   onContinue,
   onBack,
-}: LevelSelectScreenProps) {
-  const [selected, setSelected] = useState<Level | null>(null);
+}: LearningStyleScreenProps) {
+  const [selected, setSelected] = useState<string | null>(null);
 
   return (
     <OnboardingLayout
@@ -33,20 +37,20 @@ export function LevelSelectScreen({
       totalSteps={totalSteps}
       height={691}
       contentPaddingTop={4}
-      title="What level are you studying?"
-      subtitle="This helps Mathlon choose the right pace, notation, and examples."
+      title="How should Mathlon teach?"
+      subtitle="Choose the default teaching style for voice and canvas lessons."
       onBack={onBack}
       onContinue={() => selected && onContinue(selected)}
       continueDisabled={!selected}
     >
       <div className="space-y-2.5">
-        {LEVELS.map((level, i) => {
-          const isSelected = selected === level.id;
+        {STYLES.map((style) => {
+          const isSelected = selected === style.id;
           return (
             <button
-              key={level.id}
+              key={style.id}
               type="button"
-              onClick={() => setSelected(level.id)}
+              onClick={() => setSelected(style.id)}
               className="relative w-full h-[70px] rounded-xl text-left transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring"
               style={{
                 background: isSelected ? '#e8e4d9' : '#ffffff',
@@ -57,13 +61,13 @@ export function LevelSelectScreen({
                 className="absolute text-[15px] font-semibold text-[#2d2d2d]"
                 style={{ left: isSelected ? 16.5 : 17, top: isSelected ? 14.5 : 15 }}
               >
-                {level.label}
+                {style.label}
               </span>
               <span
                 className="absolute text-[12px] text-[#717182]"
                 style={{ left: isSelected ? 16.5 : 17, top: isSelected ? 40.5 : 41 }}
               >
-                {level.description}
+                {style.description}
               </span>
             </button>
           );
