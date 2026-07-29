@@ -3,29 +3,33 @@
 import { useState } from 'react';
 import { OnboardingLayout } from './OnboardingLayout';
 
-export type Level = 'foundations' | 'exam-prep' | 'university' | 'self-learner';
+type Goal = {
+  id: string;
+  label: string;
+  description: string;
+};
 
-const LEVELS: { id: Level; label: string; description: string }[] = [
-  { id: 'foundations', label: 'Foundations', description: 'Arithmetic, algebra basics, and core skills' },
-  { id: 'exam-prep', label: 'Exam prep', description: 'Algebra, geometry, trig, and test practice' },
-  { id: 'university', label: 'University', description: 'Calculus, linear algebra, proofs' },
-  { id: 'self-learner', label: 'Self-learner', description: 'Flexible explanations at your pace' },
+const GOALS: Goal[] = [
+  { id: 'pass-exams', label: 'Pass exams', description: 'Revision, speed, and common question patterns' },
+  { id: 'deep-understanding', label: 'Deep understanding', description: 'Proofs, intuition, and visual reasoning' },
+  { id: 'homework-help', label: 'Homework help', description: 'Guided steps without skipping the thinking' },
+  { id: 'just-exploring', label: 'Just exploring', description: 'Curious explanations across topics' },
 ];
 
-type LevelSelectScreenProps = {
+type GoalScreenProps = {
   currentStep: number;
   totalSteps: number;
-  onContinue: (level: Level) => void;
+  onContinue: (goal: string) => void;
   onBack: () => void;
 };
 
-export function LevelSelectScreen({
+export function GoalScreen({
   currentStep,
   totalSteps,
   onContinue,
   onBack,
-}: LevelSelectScreenProps) {
-  const [selected, setSelected] = useState<Level | null>(null);
+}: GoalScreenProps) {
+  const [selected, setSelected] = useState<string | null>(null);
 
   return (
     <OnboardingLayout
@@ -33,20 +37,20 @@ export function LevelSelectScreen({
       totalSteps={totalSteps}
       height={691}
       contentPaddingTop={4}
-      title="What level are you studying?"
-      subtitle="This helps Mathlon choose the right pace, notation, and examples."
+      title="What are you trying to achieve?"
+      subtitle="Your goal changes how direct or exploratory the tutor should be."
       onBack={onBack}
       onContinue={() => selected && onContinue(selected)}
       continueDisabled={!selected}
     >
       <div className="space-y-2.5">
-        {LEVELS.map((level, i) => {
-          const isSelected = selected === level.id;
+        {GOALS.map((goal) => {
+          const isSelected = selected === goal.id;
           return (
             <button
-              key={level.id}
+              key={goal.id}
               type="button"
-              onClick={() => setSelected(level.id)}
+              onClick={() => setSelected(goal.id)}
               className="relative w-full h-[70px] rounded-xl text-left transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring"
               style={{
                 background: isSelected ? '#e8e4d9' : '#ffffff',
@@ -57,13 +61,13 @@ export function LevelSelectScreen({
                 className="absolute text-[15px] font-semibold text-[#2d2d2d]"
                 style={{ left: isSelected ? 16.5 : 17, top: isSelected ? 14.5 : 15 }}
               >
-                {level.label}
+                {goal.label}
               </span>
               <span
                 className="absolute text-[12px] text-[#717182]"
                 style={{ left: isSelected ? 16.5 : 17, top: isSelected ? 40.5 : 41 }}
               >
-                {level.description}
+                {goal.description}
               </span>
             </button>
           );
