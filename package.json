@@ -3,9 +3,9 @@
   "private": true,
   "version": "0.0.1",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "dev": "node init && next dev",
+    "build": "node init && next build",
+    "start": "node init && next start",
     "elevenlabs:max-duration": "node scripts/set-elevenlabs-max-duration.mjs",
     "elevenlabs:max-tokens": "node scripts/set-elevenlabs-max-tokens.mjs"
   },
